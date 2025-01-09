@@ -1,35 +1,46 @@
-#Example array [2,8,4,6,0,3,4]
 
+class MergeSort:
+    def merge_sort(self,arr,l,r):
+        if l < r:
+            mid = (l + r) // 2
+            self.merge_sort(arr, l, mid)
+            self.merge_sort(arr, mid + 1, r)
 
-def merge_sort(arr):
-    if len(arr) <= 1:
-        return arr
-    mid = len(arr) // 2
-    left_arr = arr[:mid]  #Not including the midlevalue
-    right_arr = arr[mid:] #Including the middle
+            #merge the two halves
+            self.merge(arr,l,mid,r)
+    def merge(self, arr, l, mid, r):
+        left_arr  = arr[l:mid + 1]
+        right_arr = arr[mid+1:r+1]
 
-    left_sort = merge_sort(left_arr)
-    right_sort = merge_sort(right_arr)
+        i = j = k = 0
 
-    #Now we have to merge them 
+        while i < len(left_arr) and j < len(right_arr):
+            if left_arr[i] < right_arr[j]:
+                arr[k] = left_arr[i]
+                i += 1
+            else:
+                arr[k] = right_arr[j]
+                j += 1
+            k += 1
+        #copy the remaining elements from the left arr
 
-    return merge(left_sort, right_sort)
-
-
-def merge(left, right):
-    result = []
-
-    i = j = 0 #Pointers for the left and right arrays
-
-    while i < len(left) and j < len(right):
-        if left[i] < right[j]:
-            result.append(left)
+        while i < len(left_arr):
+            arr[k] = left_arr[i]
             i += 1
-        else:
-            result.append(right)
-            j+= 1
-    #Now adding the remaining code
-    result.extend(left[i:])
-    result.extend(right[j:])
+            k += 1
+        
+        #copy the remaining elements from the right arr
 
-    return result
+        while j < len(right_arr):
+            arr[k] = right_arr[j]
+            j += 1
+            k += 1
+
+
+
+
+# Test the implementation
+arr = [2, 8, 4, 6, 0, 3, 4]
+merge_sort_obj = MergeSort()
+merge_sort_obj.merge_sort(arr, 0, len(arr) - 1)
+print(arr)
